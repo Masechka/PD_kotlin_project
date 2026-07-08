@@ -25,6 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.myapplication.EventCard
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
 @Composable
@@ -52,4 +53,31 @@ fun MultiButtonDemo() {
 @Composable
 fun MultiButtonDemoPreview() {
     MultiButtonDemo()
+}
+
+
+@Composable
+fun FakeNavigationDemo() {
+    var screen by remember {  mutableStateOf("list")}
+
+    when (screen) {
+        "list" -> Column(modifier = Modifier.padding(52.dp)) {
+            EventCard("ПД", "11:00-14:00")
+            Button(onClick = {screen = "details"}) {
+                Text(text = "Поробнее")
+            }
+        }
+        "details" -> Column(modifier = Modifier.padding(52.dp)) {
+            Text("Здесь будет более подробная информация о событии")
+            Button(onClick = { screen = "list" }) {
+                Text(text = "Назад")
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun FakeNavigationDemoPreview() {
+    FakeNavigationDemo()
 }
