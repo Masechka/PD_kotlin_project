@@ -21,15 +21,18 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.myapplication.ui.theme.MyApplicationTheme
+import com.example.myapplication.viewmodel.ScheduleViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,19 +90,24 @@ fun EventListDemo() {
 }
 
 @Composable
-fun ScheduleScreen(modifier: Modifier = Modifier) {
+fun ScheduleScreen(
+    modifier: Modifier = Modifier,
+    viewModel: ScheduleViewModel = viewModel()
+) {
     var title by remember { mutableStateOf("") }
     var time by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
-    val events = remember {
-        mutableStateListOf(
-            Event("ПД", "11:00 - 14:00", "онлайн"),
-            Event("Встреча", "14:00 - 15:00", "демострация работы"),
-            Event("интенсив", "15:00 - 17:00", "онлайн")
-        )
-    }
+    val events by viewModel.events.collectAsState()
 
-    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+//    val events = remember {
+//        mutableStateListOf(
+//            Event("ПД", "11:00 - 14:00", "онлайн"),
+//            Event("Встреча", "14:00 - 15:00", "демострация работы"),
+//            Event("интенсив", "15:00 - 17:00", "онлайн")
+//        )
+//    }
+
+    Column(modifier = modifier.fillMaxSize().padding(16.dp)) {
         OutlinedTextField(
             value = title,
             onValueChange = { title = it },
@@ -117,7 +125,7 @@ fun ScheduleScreen(modifier: Modifier = Modifier) {
 
         Button(
             onClick = {
-                events.add(Event(title, time, description))
+                viewModel.addEvent(Event(title, time, description))
                 title = ""
                 time = ""
                 description = ""
