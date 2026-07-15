@@ -39,7 +39,6 @@ fun ScheduleListScreen(
 ) {
     val events by viewModel.events.collectAsState()
 
-
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(onClick = { navController.navigate("editor?eventId=-1")}) {
