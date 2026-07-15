@@ -14,11 +14,11 @@ import androidx.compose.ui.unit.dp
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
 @Composable
-fun EventCard(title: String, time: String, onClick: () -> Unit = {}) {
-    Card(modifier = Modifier
+fun EventCard(title: String, time: String, modifier: Modifier = Modifier) {
+    Card(modifier = modifier
         .fillMaxWidth()
         .padding(8.dp)
-        .clickable(onClick = onClick)) {
+    ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Text(text = title, style = MaterialTheme.typography.titleMedium)
             Text(text = time, style = MaterialTheme.typography.bodySmall)
