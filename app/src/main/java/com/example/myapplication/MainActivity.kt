@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.myapplication.ui.ScheduleScreen
+import com.example.myapplication.ui.navigation.SimpleNavDemo
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.example.myapplication.viewmodel.ScheduleViewModel
 
@@ -26,7 +27,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             MyApplicationTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    ScheduleScreen(modifier = Modifier.padding(innerPadding))
+                    //ScheduleScreen(modifier = Modifier.padding(innerPadding))
+                    SimpleNavDemo()
                 }
             }
         }

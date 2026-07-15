@@ -1,0 +1,37 @@
+package com.example.myapplication.ui.navigation
+
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+
+@Composable
+fun SimpleNavDemo() {
+    val navController = rememberNavController()
+
+    NavHost(navController = navController, startDestination = "list") {
+        composable("list") {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text("Экран списка")
+                Button(onClick =  { navController.navigate("month")}) {
+                    Text("Перейти к месяцу")
+                }
+            }
+        }
+
+        composable("month") {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text("Экран месяцв")
+                Button(onClick =  { navController.navigate("list")}) {
+                    Text("назад")
+                }
+            }
+        }
+    }
+}
