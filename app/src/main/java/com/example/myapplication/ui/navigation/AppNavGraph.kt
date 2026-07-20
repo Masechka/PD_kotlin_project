@@ -12,15 +12,21 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.myapplication.data.AppDatabase
+import com.example.myapplication.data.EventRepository
 import com.example.myapplication.ui.EditorScreen
 import com.example.myapplication.ui.MonthScreen
 import com.example.myapplication.ui.ScheduleListScreen
@@ -30,7 +36,13 @@ import com.example.myapplication.viewmodel.ScheduleViewModel
 fun AppNavGraph() {
     val navController = rememberNavController()
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
-    val viewModel: ScheduleViewModel = viewModel()
+    val context = LocalContext.current
+    val repository = remember { EventRepository(AppDatabase.getInstance(context).eventDao()) }
+    val viewModel: ScheduleViewModel = viewModel(
+        factory = viewModelFactory {
+            initializer { ScheduleViewModel(repository) }
+        }
+    )
 
     Scaffold(
         bottomBar = {

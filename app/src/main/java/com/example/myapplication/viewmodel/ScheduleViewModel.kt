@@ -1,30 +1,36 @@
 package com.example.myapplication.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.myapplication.data.EventRepository
 import com.example.myapplication.model.Event
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
-class ScheduleViewModel : ViewModel() {
-    private var nextId = 0L
-    private val _events = MutableStateFlow<List<Event>>(emptyList())
-    val events: StateFlow<List<Event>> = _events.asStateFlow()
+class ScheduleViewModel(private val repository: EventRepository) : ViewModel() {
+    val events: StateFlow<List<Event>> = repository.observeAll().
+    stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
+    fun observeEvent(id: Long): Flow<Event?> = repository.observeById(id)
     fun addEvent(title: String, time: String, description: String) {
-        val newEvent = Event(id = nextId++, title = title, time = time, description = description)
-        _events.value = _events.value + newEvent
+        viewModelScope.launch {
+            repository.add(Event(title = title, time = time, description = description))
+        }
     }
 
     fun updateEvent(id: Long, title: String, time: String, description: String) {
-        _events.value = _events.value.map {
-            if (it.id == id) it.copy(title = title, time = time, description = description) else it
+        viewModelScope.launch {
+            repository.update(Event(id = id, title = title, time = time, description = description))
         }
     }
 
     fun removeEvent(event: Event) {
-        _events.value = events.value - event
+        viewModelScope.launch {
+            repository.delete(event)
+        }
     }
 
-    fun getEventById(id: Long): Event? = _events.value.find { it.id == id }
 }

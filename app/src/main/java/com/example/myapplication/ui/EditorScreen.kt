@@ -22,12 +22,13 @@ import com.example.myapplication.viewmodel.ScheduleViewModel
 fun EditorScreen(
     eventId: Long,
     navController: NavController,
-    viewModel: ScheduleViewModel = viewModel()
+    viewModel: ScheduleViewModel
 ) {
-    val existingEvent = remember(eventId) { viewModel.getEventById(eventId) }
-    var title by remember(eventId) { mutableStateOf(existingEvent?.title ?: "") }
-    var time by remember(eventId) { mutableStateOf(existingEvent?.time ?: "") }
-    var description by remember(eventId) { mutableStateOf(existingEvent?.description ?: "") }
+    val existingEvent by remember(eventId) { viewModel.observeEvent(eventId) }
+        .collectAsState(initial = null)
+    var title by remember(existingEvent) { mutableStateOf(existingEvent?.title ?: "") }
+    var time by remember(existingEvent) { mutableStateOf(existingEvent?.time ?: "") }
+    var description by remember(existingEvent) { mutableStateOf(existingEvent?.description ?: "") }
 
 
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {

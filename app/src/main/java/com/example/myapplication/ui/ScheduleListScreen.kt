@@ -35,7 +35,7 @@ import com.example.myapplication.viewmodel.ScheduleViewModel
 @Composable
 fun ScheduleListScreen(
     navController: NavController,
-    viewModel: ScheduleViewModel = viewModel()
+    viewModel: ScheduleViewModel
 ) {
     val events by viewModel.events.collectAsState()
 
