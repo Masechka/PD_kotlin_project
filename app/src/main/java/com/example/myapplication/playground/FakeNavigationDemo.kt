@@ -62,7 +62,7 @@ fun FakeNavigationDemo() {
 
     when (screen) {
         "list" -> Column(modifier = Modifier.padding(52.dp)) {
-            EventCard("ПД", "", "11:00-14:00")
+            EventCard("ПД", "", "11:00-14:00", 2)
             Button(onClick = {screen = "details"}) {
                 Text(text = "Поробнее")
             }

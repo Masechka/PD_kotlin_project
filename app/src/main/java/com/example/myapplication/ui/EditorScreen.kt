@@ -1,9 +1,20 @@
 package com.example.myapplication.ui
 
 import android.widget.DatePicker
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
@@ -25,9 +36,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.myapplication.ui.theme.eventPalette
 import com.example.myapplication.viewmodel.ScheduleViewModel
 import java.time.Instant
 import java.time.ZoneOffset
@@ -69,6 +82,26 @@ fun EditorScreen(
             value = description,
             onValueChange = { description = it },
             label = { Text("Описание") })
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            eventPalette.forEachIndexed { index, color ->
+                Box(
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clip(CircleShape)
+                        .background(color)
+                        .border(
+                            width = if (index == colorIndex) 3.dp else 0.dp,
+                            color = MaterialTheme.colorScheme.primary,
+                            shape = CircleShape
+                        )
+                        .clickable {colorIndex = index}
+                )
+            }
+        }
+        Spacer(modifier = Modifier.height(12.dp))
 
         Button(onClick = {
             if (existingEvent != null) {

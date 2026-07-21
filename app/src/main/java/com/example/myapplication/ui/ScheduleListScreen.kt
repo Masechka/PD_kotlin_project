@@ -86,6 +86,7 @@ fun ScheduleListScreen(
                         title = event.title,
                         date = event.date,
                         time = event.time,
+                        colorIndex = event.colorIndex,
                         modifier = Modifier.clickable{
                             navController.navigate("editor?eventId=${event.id}")
                         }
