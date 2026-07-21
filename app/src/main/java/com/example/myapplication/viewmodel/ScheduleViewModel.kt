@@ -9,21 +9,22 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.sql.Date
 
 class ScheduleViewModel(private val repository: EventRepository) : ViewModel() {
     val events: StateFlow<List<Event>> = repository.observeAll().
     stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     fun observeEvent(id: Long): Flow<Event?> = repository.observeById(id)
-    fun addEvent(title: String, time: String, description: String) {
+    fun addEvent(title: String, date: String, time: String, description: String, colorIndex: Int) {
         viewModelScope.launch {
-            repository.add(Event(title = title, time = time, description = description))
+            repository.add(Event(title = title, date = date, time = time, description = description, colorIndex = colorIndex))
         }
     }
 
-    fun updateEvent(id: Long, title: String, time: String, description: String) {
+    fun updateEvent(id: Long, title: String, date: String, time: String, description: String, colorIndex: Int) {
         viewModelScope.launch {
-            repository.update(Event(id = id, title = title, time = time, description = description))
+            repository.update(Event(id = id, title = title, date = date, time = time, description = description, colorIndex = colorIndex))
         }
     }
 

@@ -51,7 +51,7 @@ fun ScheduleListScreen(
     val sortedEvents = if (sortByTitle) {
         filteredEvents.sortedBy { it.title }
     } else {
-        filteredEvents.sortedBy { it.time }
+        filteredEvents.sortedBy { "${it.date} ${it.time}" }
     }
 
     Scaffold(
@@ -84,6 +84,7 @@ fun ScheduleListScreen(
                 items(sortedEvents) { event ->
                     EventCard(
                         title = event.title,
+                        date = event.date,
                         time = event.time,
                         modifier = Modifier.clickable{
                             navController.navigate("editor?eventId=${event.id}")
